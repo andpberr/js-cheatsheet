@@ -337,7 +337,7 @@ if (temperature < 60) {
     // do nothing, my outfit is on point
 } else {
     // 76 or hotter? better go change
-    outfit.shirt = 'tanktop';
+    outfit.top = 'tanktop';
     outfit.bottom = 'shorts';
 }
 ```
@@ -356,7 +356,7 @@ function bake(food) {
 }
 
 // bake the mahi fillet until it's reached a safe temp
-while (fillet.temperature <= 145) {
+while (fillet.temperature < 145) {
     bake(fillet);
 }
 

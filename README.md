@@ -44,7 +44,7 @@ const SCREEN_WIDTH = "20px"; // that's a small screen, and such a shame, because
 
 ## Numbers
 
-Numbers in javascript behave about like the numbers you're used to from math class. You can do any basic arithmetic operations on them that you're used to (add, subtract, multiply, divide, take the remainder). 
+Numbers in javascript behave about like the numbers you're used to from math class. You can do any basic arithmetic operations on them that you're used to (add, subtract, multiply, divide, take the remainder, compute exponents/powers). 
 
 There is also a handy [Math library](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math) that contains a lot of useful functions for doing more advanced stuff with numbers beyond those basic operations.
 
@@ -57,6 +57,7 @@ console.log(x - 64); // subtraction: 64
 console.log(x * 4); // multiplication: 1024
 console.log(x / 4); // division: 32
 console.log(x % 10); // remainder: 8
+console.log(x ** 2); // exponent: 16384
 
 /* 
     remainder is also called the modulo operator
@@ -422,3 +423,82 @@ for (let attr in fillet) {
 ```
 
 ## Functions
+
+Functions are a good way to break up code for reuse, so that you [don't have to repeat yourself](http://en.wikipedia.org/wiki/Don%27t_repeat_yourself). 
+
+```javascript
+// function that takes no arguments
+function scream() {
+    console.log("AAAAAAHHHHH");
+}
+
+// example function declaration, with 1 parameter
+function sayHi(name){
+    console.log(`Hello, ${name}!`)
+}
+
+// call sayHi with 'Jim' as the argument
+sayHi('Jim');
+
+// say we have 3 points in 2d space
+let points = [
+    {x: 10, y:20},
+    {x:12, y:-2},
+    {x:40, y:1}
+];
+
+// if we want to see which 2 points are closest to each other
+let p1 = points[0];
+let p2 = points[1];
+let p3 = points[2];
+
+// compute the distances
+let d12 = Math.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2);
+let d23 = Math.sqrt((p2.x - p3.x) ** 2 + (p2.y - p3.y) ** 2);
+let d13 = Math.sqrt((p1.x - p3.x) ** 2 + (p1.y - p3.y) ** 2);
+
+// This calculation is repetitive, and gives us a lot of room
+// for error... we should create a function so that the 
+// distance calculation is guaranteed to always work the same
+function distance(p1, p2) {
+    return Math.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2);
+}
+
+// using that function instead of those calculations...
+d12 = distance(p1,p2);
+d23 = distance(p2,p3);
+d13 = distance(p1,p3);
+
+```
+
+### Arrow functions
+
+Arrow functions are a neat syntax for ES2015 and later versions that allow tighter, more concise creation of functions. They are especially useful in contexts where functions are being passed as arguments to other functions (such as callbacks, promises, and functional programming constructs like `map()`, `filter()`, and `reduce()`).
+
+```javascript
+// recall the functions from last section
+function scream() {
+    console.log("AAAAAAHHHHH");
+}
+
+function sayHi(name){
+    console.log(`Hello, ${name}!`)
+}
+
+function distance(p1, p2) {
+    return Math.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2);
+}
+
+// These can be rewritten as follows:
+scream = () => console.log("AAAAAAHHHHH");
+
+sayHi = (name) => console.log(`Hello, ${name}!`);
+//or
+sayHi = name => console.log(`Hello, ${name}!`);
+
+//... single-argument arrow functions, the parentheses are optional
+
+
+distance = (p1,p2) =>
+    Math.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2);
+```

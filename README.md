@@ -172,14 +172,253 @@ console.log(records); // ["Hail to the Thief"]
 
 /*
     Accessing array elements is done by using square brackets []
-    This is also known as "subscripting"
+    This is also known as "subscripting" or "indexing"
+
+    Indices for arrays in javascript start at 0
 */
+let myArray = [
+    'raining',
+    'cats',
+    'and',
+    'dogs'
+];
+
+console.log(myArray[1]); // 'cats'
+
+// slicing works similar to string slicing
+console.log(myArray.slice(1));
+// ['cats', 'and', 'dogs']
+
+// Arrays of strings can be concatenated with a separator using join()
+myArray.join(' '); // "raining cats and dogs"
+
+let csv = ['name','age','height','weight'];
+csv.join(','); // 'name,age,height,weight'
+
+/*
+    Array elements can be any type of data
+    Including other arrays
+*/
+let ticTacToe = [
+    ['O', 'X', '_'],
+    ['O', '_', '_'],
+    ['_', 'X', '_']
+];
+
+// indexing can be thought of from the "outside inward"
+// so ticTacToe[0] is the first subArray of ticTacToe
+ticTacToe[1][1] = 'X'; // X wins the game!
+console.log(ticTacToe);
+/* 
+[
+    ['O','X','_'],
+    ['O','X','_'],
+    ['_','X','_']   
+]
+
+*/
+
 ```
 
 ## Objects
 
+While arrays are used to hold sequences of data elements, objects contain a collection of named data elements. This can be handy when working with complex types of data that have many attributes.
+
+```javascript
+/*
+  Imagine you're digitally storing a collection of
+  vinyl records using javascript. Since you know
+  arrays, you can use arrays to represent records
+  and their attributes (artist, title, etc)
+*/
+let myRecords = [
+    //title, artist, vinylColor, numSongs, numDiscs
+    ['A Moon Shaped Pool', 'Radiohead', 'gray', 10, 1],
+    ['Hail to the Thief', 'Radiohead', 'black', 14, 2],
+    ['Deltron 3030', 'Deltron 3030', 'black', 21, 2]
+];
+
+// as your program grows, it will be increasingly
+// difficult to keep track of the fact that 
+// record[0] is the title
+// record[1] is the artist name
+// record[2] is the color of the vinyl
+// etc...
+// Also, cases like Deltron 3030 make it unclear
+// which field is the title and which is the artist
+
+// Eventually it would become second nature,
+// but the overhead of having to memorize
+// the numbering scheme is something we 
+// can avoid with objects
+
+// What if the array instead looked like this?
+myRecords = [
+    {
+        title: 'A Moon Shaped Pool',
+        artist: 'Radiohead',
+        vinylColor: 'gray',
+        tracks: 10,
+        discs: 1
+    },
+
+    {
+        title: 'Hail to the Thief',
+        artist: 'Radiohead',
+        vinylColor: 'black',
+        tracks: 14,
+        discs: 2
+    },
+
+    {
+        title: 'Deltron 3030',
+        artist: 'Deltron 3030',
+        vinylColor: 'black',
+        tracks: 21,
+        discs: 2
+    }
+];
+
+// Now each record is represented by an object,
+// which has named fields instead of numbered 
+// array indices
+let amsp = myRecords[0];
+console.log(amsp['vinylColor']); // 'gray'
+
+// besides the square bracket notation, you can
+// also access attributes of objects with dot notation
+amsp.title; // no quotes
+amsp['title']; // bracket notation needs a string in quotes
+
+// objects can be given new attributes
+amsp.favoriteSong = 'Identikit';
+
+// you can assign multiple attributes at once 
+// using Object.assign()
+let dish = {hotdog:1, hotdogBun:1};
+let toppings = {mustard: '2 squirts', onion:'half cup', relish: '1 squirt'};
+Object.assign(dish, toppings);
+
+console.log(dish);
+/*
+{
+    hotdog:1,
+    hotdogBun:1,
+    mustard: '2 squirts',
+    onion:'half cup',
+    relish: '1 squirt'
+}
+*/
+
+// If using ES2015, you can use the spread operator
+// to do multiple attribute assignment as well
+dish = {...dish, ...toppings}; // equivalent to above Object.assign() call
+
+```
+
 ## Conditionals and Logic
 
+Occasionally you'll need your code to do different things depending on what kinds of conditions there are.
+
+```javascript
+let outfit = {
+    top:'t-shirt', 
+    bottom: 'jeans', 
+    shoes:'sneakers'
+};
+
+// random temperature between 50 and 80
+let temperature = Math.floor(Math.random()*30)+50;
+
+if (temperature < 60) {
+    outfit.outerwear = 'light jacket';
+} else if (temperature < 76) {
+    // do nothing, my outfit is on point
+} else {
+    // 76 or hotter? better go change
+    outfit.shirt = 'tanktop';
+    outfit.bottom = 'shorts';
+}
+```
+
 ## Loops
+
+### `while` loop
+
+`while` executes its body over and over again until the condition passed is no longer true.
+
+```javascript
+let fillet = {type: 'mahi', temperature: 34};
+
+function bake(food) {
+    food.temperature += 1;
+}
+
+// bake the mahi fillet until it's reached a safe temp
+while (fillet.temperature <= 145) {
+    bake(fillet);
+}
+
+```
+
+### `do` loop (or `do...while` loop)
+
+A `do...while` loop executes the code within itself before checking the condition. A `do...while` loop will always run its code at least once.
+
+You should brush your teeth before bed until you're minty fresh. You may have just eaten a peppermint patty, so you already feel minty fresh, but you should brush your teeth anyway. This is a dumb example but I'm running out of ideas. Also, `do...while` loops are pretty much the least-used in practice.
+```javascript
+do {
+    brushTeeth();
+} while (!mintyFresh);
+
+```
+
+### `for` loop
+
+The `for` loop is probably the most common type of loop. You'll find yourself using it and encountering it more than `while` and `do...while` loops.
+
+Syntax for a `for` loop is as follows:
+<pre>
+for (<span style="border:1px dotted green">setup</span>; <span style="border:1px dotted green">condition</span>;<span style="border:1px dotted green">increment</span>) {
+    <span style="border:1px dotted green">loop body</span>
+}
+</pre>
+
+Let's look at some examples:
+
+```javascript
+let thanksgiving = [
+    'beans',
+    'greens',
+    'potatoes',
+    'tomatoes'
+];
+
+for (let i = 0; i < thanksgiving.length; ++i) {
+    console.log(`Let's eat ${thanksgiving[i]}!`);
+}
+
+// the above for loop pattern of iterating 
+// through all the elements in an array is so common
+// that javascript offers a more concise syntax for 
+// it... the "for of" loop
+
+// the thanksgiving loop can be rewritten as
+for (let food of thanksgiving) {
+    console.log(`Let's eat ${food}!`);
+}
+
+// another type of for loop you may see is the
+// "for in" loop... it can be used to iterate
+// through the attributes of an object
+
+// using our mahi fillet object from earlier, the
+// below loop prints:
+// type = mahi
+// temperature = 145
+for (let attr in fillet) {
+    console.log(`${attr} = ${fillet[attr]}`);
+}
+```
 
 ## Functions
